@@ -25,6 +25,29 @@ public class RoomNodeGraphSO : ScriptableObject
         }
     }
 
+    /// <summary>
+    /// Get room node by roomNodeType
+    /// </summary>
+    /// <param name="roomNodeType"></param>
+    /// <returns></returns>
+    public RoomNodeSO GetRoomNode(RoomNodeTypeSO roomNodeType)
+    {
+        foreach (RoomNodeSO node in roomNodeList)
+        {
+            if (node.roomNodeType == roomNodeType)
+            {
+                return node;
+            }
+        }
+        
+        return null;
+    }
+
+    /// <summary>
+    /// Get room node by id
+    /// </summary>
+    /// <param name="roomNodeID"></param>
+    /// <returns></returns>
     public RoomNodeSO GetRoomNode(string roomNodeID)
     {
         if (roomNodeDictionary.TryGetValue(roomNodeID, out RoomNodeSO roomNode))
@@ -35,6 +58,19 @@ public class RoomNodeGraphSO : ScriptableObject
         {
             Debug.LogError("Room node dictionary does not contain a room node with the ID: " + roomNodeID);
             return null;
+        }
+    }
+
+    /// <summary>
+    ///  Get the child nodes of a parent room node
+    /// </summary>
+    /// <param name="parentRoomNode"></param>
+    /// <returns></returns>
+    public IEnumerable<RoomNodeSO> GetChildNodes(RoomNodeSO parentRoomNode)
+    {
+        foreach (string childNodeID in parentRoomNode.childRoomNodeIDList)
+        {
+            yield return GetRoomNode(childNodeID);
         }
     }
 
