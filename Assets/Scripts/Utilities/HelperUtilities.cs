@@ -24,6 +24,16 @@ public static class HelperUtilities
         }
     }
 
+    public static bool ValidateCheckNullValue(Object thisObject, string fieldName, Object objectToCheck)
+    {
+        if (objectToCheck == null)
+        {
+            Debug.LogError("The " + fieldName + " is null and must contain a value object in " + thisObject.name.ToString());
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// list is empty or contains a null value check; returns true if there is an error
     /// </summary>
@@ -62,5 +72,33 @@ public static class HelperUtilities
         }
 
         return error;
+    }
+    
+    /// <summary>
+    /// Positive value check debug, if zero is allowed, set isZeroAllowed to true
+    /// </summary>
+    /// <param name="thisObject"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="valueToCheck"></param>
+    /// <returns></returns>
+    public static bool ValidateCheckPositiveValue(Object thisObject, string fieldName, int valueToCheck, bool isZeroAllowed)
+    {
+        if (isZeroAllowed)
+        {
+            if (valueToCheck <= 0)
+            {
+                Debug.LogError(fieldName + " must contain a positive value or zero in object " + thisObject.name.ToString());
+                return true;
+            }
+        }
+        else
+        {
+            if (valueToCheck < 0)
+            {
+                Debug.LogError(fieldName + " must contain a positive value in object " + thisObject.name.ToString());
+                return true;
+            }
+        }
+        return false;
     }
 }
