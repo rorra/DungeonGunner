@@ -177,6 +177,50 @@ public static class HelperUtilities
     }
 
     /// <summary>
+    /// Positive value check debug, if zero is allowed, set isZeroAllowed to true
+    /// </summary>
+    /// <param name="thisObject"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="valueToCheck"></param>
+    /// <param name="isZeroAllowed"></param>
+    /// <returns></returns>
+    public static bool ValidateCheckPositiveValue(Object thisObject, string fieldName, float valueToCheck, bool isZeroAllowed)
+    {
+        if (isZeroAllowed)
+        {
+            if (valueToCheck < 0)
+            {
+                Debug.LogError(fieldName + " must contain a positive value or zero in object " + thisObject.name.ToString());
+                return true;
+            }
+        }
+        else
+        {
+            if (valueToCheck <= 0)
+            {
+                Debug.LogError(fieldName + " must contain a positive value in object " + thisObject.name.ToString());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool ValidateCheckPositiveRange(Object thisObject, string fieldNameMinimum, float valueToCheckMinimum, string fieldNameMaximum, float valueToCheckMaximum, bool isZeroAllowed)
+    {
+        bool error = false;
+        if (valueToCheckMinimum > valueToCheckMaximum)
+        {
+            Debug.LogError(fieldNameMinimum + " must be less than or equal to " + fieldNameMaximum + " in object " + thisObject.name.ToString());
+            error = true;
+        }
+
+        if (ValidateCheckPositiveValue(thisObject, fieldNameMinimum, valueToCheckMinimum, isZeroAllowed)) error = true;
+        if (ValidateCheckPositiveValue(thisObject, fieldNameMaximum, valueToCheckMaximum, isZeroAllowed)) error = true;
+
+        return error;
+    }
+
+    /// <summary>
     /// Get the nearest spawn position to the player
     /// </summary>
     /// <param name="playerPosition"></param>

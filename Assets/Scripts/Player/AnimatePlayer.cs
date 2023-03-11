@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 [RequireComponent(typeof(Player))]
 [DisallowMultipleComponent]
@@ -16,14 +17,21 @@ public class AnimatePlayer : MonoBehaviour
 
     private void OnEnable()
     {
+        player.movementByVelocityEvent.OnMovementByVelocityEvent += MovementByVelocityEvent_OnMovementByVelocityEvent;
         player.idleEvent.OnIdle += IdleEvent_OnIdle;
         player.aimWeaponEvent.OnWeaponAim += AimWeaponEvent_OnWeaponAim;
     }
 
     private void OnDisable()
     {
+        player.movementByVelocityEvent.OnMovementByVelocityEvent -= MovementByVelocityEvent_OnMovementByVelocityEvent;
         player.idleEvent.OnIdle -= IdleEvent_OnIdle;
         player.aimWeaponEvent.OnWeaponAim -= AimWeaponEvent_OnWeaponAim;
+    }
+
+    private void MovementByVelocityEvent_OnMovementByVelocityEvent(MovementByVelocityEvent movementByVelocityEvent, MovementByVelocityEventArgs movementByVelocityEventArgs)
+    {
+        SetMovementAnimationParameters();
     }
 
     /// <summary>
@@ -57,6 +65,15 @@ public class AnimatePlayer : MonoBehaviour
         player.animator.SetBool(Settings.aimRight, false);
         player.animator.SetBool(Settings.aimLeft, false);
         player.animator.SetBool(Settings.aimDown, false);
+    }
+
+    /// <summary>
+    /// Initialize movement animation parameters
+    /// </summary>
+    private void SetMovementAnimationParameters()
+    {
+        player.animator.SetBool(Settings.isMoving, true);
+        player.animator.SetBool(Settings.isIdle, false);
     }
 
     /// <summary>
