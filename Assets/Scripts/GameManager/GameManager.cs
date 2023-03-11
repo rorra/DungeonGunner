@@ -28,9 +28,32 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     #endregion Tooltip
 
     [SerializeField] private int currentDungeonLevelListIndex = 0;
+    private Room currentRoom;
+    private Room previousRoom;
+    private PlayerDetailsSO playerDetails;
+    private Player player;
 
     [HideInInspector]
     public GameState gameState;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Set the player details saved in the current player scriptable object from the main menu
+        playerDetails = GameResources.Instance.currentPlayer.playerDetails;
+
+        // Instantiate the player
+        InstantiatePlayer();
+    }
+
+    private void InstantiatePlayer()
+    {
+        // Instantiate and initialize the player
+        GameObject playerGameObject = Instantiate(playerDetails.playerPrefab);
+        player = playerGameObject.GetComponent<Player>();
+        player.Initialize(playerDetails);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -78,6 +101,35 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             Debug.LogError("Dungeon could not be built");
         }
+
+        // Set the player in middle of the room
+        player.gameObject.transform.position = new Vector3(
+            (currentRoom.lowerBounds.x + currentRoom.upperBounds.x) / 2f, 
+            (currentRoom.lowerBounds.y + currentRoom.upperBounds.y) / 2f, 
+            0f
+        );
+
+        // Get the nearest spawn point next to the player
+        player.gameObject.transform.position = HelperUtilities.GetSpawnPositionNearestToPlayer(player.gameObject.transform.position);
+    }
+
+    /// <summary>
+    /// Get the current room
+    /// </summary>
+    /// <returns>Current Room</returns>
+    public Room GetCurrentRoom()
+    {
+        return currentRoom;
+    }
+
+    /// <summary>
+    /// Sets the current room
+    /// </summary>
+    /// <param name="room">The Room to set</param>
+    public void SetCurrentRoom(Room room)
+    {
+        previousRoom = currentRoom;
+        currentRoom = room;
     }
 
     #region Validation
