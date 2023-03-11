@@ -114,6 +114,15 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
 
     /// <summary>
+    /// Gets the current player
+    /// </summary>
+    /// <returns></returns>
+    public Player GetPlayer()
+    {
+        return player;
+    }
+
+    /// <summary>
     /// Get the current room
     /// </summary>
     /// <returns>Current Room</returns>
