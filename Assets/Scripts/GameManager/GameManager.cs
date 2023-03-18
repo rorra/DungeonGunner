@@ -102,6 +102,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
             Debug.LogError("Dungeon could not be built");
         }
 
+        // Call static event fo room changed, to show the room
+        StaticEventHandler.CallRoomChangedEvent(currentRoom);
+
         // Set the player in middle of the room
         player.gameObject.transform.position = new Vector3(
             (currentRoom.lowerBounds.x + currentRoom.upperBounds.x) / 2f, 
