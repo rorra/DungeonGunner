@@ -37,6 +37,8 @@ public class InstantiatedRoom : MonoBehaviour
 
         BlockOffUnusedDoorways();
 
+        AddDoorsToRooms();
+
         DisableCollisionTilemapRenderer();
     }
 
@@ -159,6 +161,45 @@ public class InstantiatedRoom : MonoBehaviour
 
                 // Set rotation of tile copied
                 tilemap.SetTransformMatrix(new Vector3Int(startPosition.x + xPos, startPosition.y - 1 - yPos, 0), transformMatrix);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Add opening doors if this is not a corridor room
+    /// </summary>
+    public void AddDoorsToRooms()
+    {
+        if (room.roomNodeType.isCorridorNS || room.roomNodeType.isCorridorEW) return;
+
+        // Instatiate door prefabs at doorway positions
+        foreach (Doorway doorway in room.doorWayList)
+        {
+            if (doorway.doorPrefab != null && doorway.isConnected)
+            {
+                float titleDistance = Settings.titleSizePixels / Settings.pixelPerUnit;
+                GameObject door = null;
+                
+                if (doorway.orientation == Orientation.north)
+                {
+                    door = Instantiate(doorway.doorPrefab, gameObject.transform);
+                    door.transform.localPosition = new Vector3(doorway.position.x + titleDistance / 2f, doorway.position.y + titleDistance, 0f);
+                }
+                else if (doorway.orientation == Orientation.south)
+                {
+                    door = Instantiate(doorway.doorPrefab, gameObject.transform);
+                    door.transform.localPosition = new Vector3(doorway.position.x + titleDistance / 2f, doorway.position.y, 0f);
+                }
+                else if (doorway.orientation == Orientation.east)
+                {
+                    door = Instantiate(doorway.doorPrefab, gameObject.transform);
+                    door.transform.localPosition = new Vector3(doorway.position.x + titleDistance, doorway.position.y + titleDistance * 1.25f, 0f);
+                }
+                else if (doorway.orientation == Orientation.west)
+                {
+                    door = Instantiate(doorway.doorPrefab, gameObject.transform);
+                    door.transform.localPosition = new Vector3(doorway.position.x, doorway.position.y + titleDistance * 1.25f, 0f);
+                }
             }
         }
     }
