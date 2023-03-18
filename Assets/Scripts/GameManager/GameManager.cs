@@ -47,12 +47,34 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         InstantiatePlayer();
     }
 
+    /// <summary>
+    /// Creates the player in scene at position
+    /// </summary>
     private void InstantiatePlayer()
     {
         // Instantiate and initialize the player
         GameObject playerGameObject = Instantiate(playerDetails.playerPrefab);
         player = playerGameObject.GetComponent<Player>();
         player.Initialize(playerDetails);
+    }
+
+    private void OnEnable()
+    {
+        StaticEventHandler.OnRoomChanged += StaticEventHandler_OnRoomChanged;
+    }
+
+    private void OnDisable()
+    {
+        StaticEventHandler.OnRoomChanged -= StaticEventHandler_OnRoomChanged;
+    }
+
+    /// <summary>
+    /// Handles room changed event
+    /// </summary>
+    /// <param name="roomChangedEventArgs"></param>
+    private void StaticEventHandler_OnRoomChanged(RoomChangedEventArgs roomChangedEventArgs)
+    {
+        SetCurrentRoom(roomChangedEventArgs.room);
     }
 
     // Start is called before the first frame update
