@@ -19,7 +19,7 @@ public static class Settings
     #endregion ROOM SETTINGS
 
     #region ANIMATOR PARAMETERES
-    // Animators parameters - Player
+    // Animator parameters - Player
     public static int aimUp = Animator.StringToHash("aimUp");
     public static int aimDown = Animator.StringToHash("aimDown");
     public static int aimUpRight = Animator.StringToHash("aimUpRight");
@@ -32,5 +32,14 @@ public static class Settings
     public static int rollRight = Animator.StringToHash("rollRight");
     public static int rollLeft = Animator.StringToHash("rollLeft");
     public static int rollDown = Animator.StringToHash("rollDown");
+
+    // Animator parameters - Door
+    public static int open = Animator.StringToHash("open");
+
+    #endregion
+
+    #region GAMEOBJECT TAGS
+    public const string playerTag = "Player";
+    public const string playerWeapon = "playerWeapon";
     #endregion
 }

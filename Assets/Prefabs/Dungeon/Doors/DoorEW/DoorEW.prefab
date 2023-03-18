@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3631990112094873198}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 1011246446928103452}
   - component: {fileID: 6372641971886889721}
   - component: {fileID: 6896866778735185840}
+  - component: {fileID: -4295164128215249993}
   m_Layer: 13
   m_Name: DoorEW
   m_TagString: Untagged
@@ -191,6 +192,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 5.5}
   m_EdgeRadius: 0
+--- !u!114 &-4295164128215249993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4215557343000058047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1485ea162513b6f488a1e0061ea3ad25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorCollider: {fileID: 6530294139353113314}
+  isBossRoomDoor: 0
 --- !u!1 &5480715980707038013
 GameObject:
   m_ObjectHideFlags: 0
