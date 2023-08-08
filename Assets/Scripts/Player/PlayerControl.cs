@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Player))]
+[DisallowMultipleComponent]
 public class PlayerControl : MonoBehaviour
 {
     #region Tooltip
@@ -8,12 +10,8 @@ public class PlayerControl : MonoBehaviour
     #endregion Tooltip
     [SerializeField] private MovementDetailsSO movementDetails;
 
-    #region Tooltip
-    [Tooltip("The player WeaponShotPosition gameobject in the hierarchy")]
-    #endregion Tooltip
-    [SerializeField] private Transform weaponShotPosition;
-
     private Player player;
+    private int currentWeaponIndex = 1;
     private float moveSpeed;
     private Coroutine playerRollCourutine;
     private WaitForFixedUpdate waitForFixedUpdate;
@@ -31,9 +29,61 @@ public class PlayerControl : MonoBehaviour
         // create waiteForFixedUpdate to use in the coroutine
         waitForFixedUpdate = new WaitForFixedUpdate();
 
+        // Set player starting weapon
+        SetStartingWeapon();
+
         // Set player speed animation
         SetPlayerAnimationSpeed();
     }
+
+    /// <summary>
+    /// Set the player starting weapon
+    /// </summary>
+    private void SetStartingWeapon()
+    {
+        int index = 1;
+
+        foreach (Weapon weapon in player.weaponList)
+        {
+            if (weapon.weaponDetails == player.playerDetails.startingWeapon)
+            {
+                SetWeaponByIndex(index);
+                break;
+            }
+            index++;
+        }
+    }
+
+    private void ReloadWeaponInput()
+    {
+        Weapon currentWeapon = player.activeWeapon.GetCurrentWeapon();
+
+        // If the weapon is reloading, return
+        if (currentWeapon.isWeaponReloading) return;
+
+        // Remaining ammo is less than the clip capacity and not infinity ammo, return
+        if (currentWeapon.weaponRemainingAmmo < currentWeapon.weaponDetails.weaponClipAmmoCapacity && !currentWeapon.weaponDetails.hasInfiniteAmmo)
+            return;
+
+        // If the ammo clip equals clip capacity, then return
+        if (currentWeapon.weaponClipRemainingAmmo == currentWeapon.weaponDetails.weaponClipAmmoCapacity) return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Call the reload weapon event
+            player.reloadWeaponEvent.CallReloadWeaponEvent(currentWeapon, 0);
+        }
+    }
+
+    private void SetWeaponByIndex(int weaponIndex)
+    {
+        if (weaponIndex - 1 < player.weaponList.Count)
+        {
+            currentWeaponIndex = weaponIndex;
+            player.setActiveWeaponEvent.CallSetActiveWeaponEvent(player.weaponList[weaponIndex - 1]);
+        }
+    }
+
 
     /// <summary>
     /// Set player animation speed to match movement speed
@@ -129,6 +179,12 @@ public class PlayerControl : MonoBehaviour
 
         // Aim weapon input
         AimWeaponInput(out weaponDirection, out weaponAngleDegrees, out playerAngleDegrees, out playerAimDirection);
+        
+        // Fire weapon input
+        FireWeaponInput(weaponDirection, weaponAngleDegrees, playerAngleDegrees, playerAimDirection);
+
+        // Reload weapon input
+        ReloadWeaponInput();
     }
 
     private void AimWeaponInput(out Vector3 weaponDirection, out float weaponAngleDegrees, out float playerAngleDegrees, out AimDirection playerAimDirection)
@@ -137,7 +193,7 @@ public class PlayerControl : MonoBehaviour
         Vector3 mouseWorldPosition = HelperUtilities.GetMouseWorldPosition();
 
         // Calculate direction of the vector of mouse cursor from weapon shoot position
-        weaponDirection = (mouseWorldPosition - weaponShotPosition.position);
+        weaponDirection = (mouseWorldPosition - player.activeWeapon.GetShootPosition());
 
         // Calculate direction vector of mouse cursor from the player transform position
         Vector3 playerDirection = (mouseWorldPosition - transform.position);
@@ -153,6 +209,16 @@ public class PlayerControl : MonoBehaviour
 
         // Trigger the player aim event
         player.aimWeaponEvent.CallAimWeaponEvent(playerAimDirection, playerAngleDegrees, weaponAngleDegrees, weaponDirection);
+    }
+    
+    public void FireWeaponInput(Vector3 weaponDirection, float weaponAngleDegrees, float playerAngleDegrees, AimDirection playerAimDirection)
+    {
+        // Fire when left button is clicked
+        if (Input.GetMouseButton(0))
+        {
+            // Trigger the player fire event
+            player.fireWeaponEvent.CallFireWeaponEvent(true, playerAimDirection, playerAngleDegrees, weaponAngleDegrees, weaponDirection);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

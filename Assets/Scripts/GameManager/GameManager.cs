@@ -78,21 +78,21 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         gameState = GameState.gameStarted;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         HandleGameState();
 
-        // Delete when testing is done
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            gameState = GameState.gameStarted;
-        }
+        //// Delete when testing is done
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    gameState = GameState.gameStarted;
+        //}
     }
 
     /// <summary>
