@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameResources : MonoBehaviour
@@ -54,6 +52,15 @@ public class GameResources : MonoBehaviour
     [Tooltip("Populate with the Variable Lit Shared")]
     #endregion
     public Shader variableLitShared;
+    
+    #region Header UI
+    [Space(10)]
+    [Header("UI")]
+    #endregion
+    #region Tooltip
+    [Tooltip("Populate with ammo icon prefab")]
+    #endregion
+    public GameObject ammoIconPrefab;
 
     #region Validation
 #if UNITY_EDITOR
@@ -64,6 +71,7 @@ public class GameResources : MonoBehaviour
         HelperUtilities.ValidateCheckNullValue(this, nameof(dimmedMaterial), dimmedMaterial);
         HelperUtilities.ValidateCheckNullValue(this, nameof(litMaterial), litMaterial);
         HelperUtilities.ValidateCheckNullValue(this, nameof(variableLitShared), variableLitShared);
+        HelperUtilities.ValidateCheckNullValue(this, nameof(ammoIconPrefab), ammoIconPrefab);
     }
 #endif
     #endregion
