@@ -50,7 +50,10 @@ public class ActiveWeapon : MonoBehaviour
     {
         currentWeapon = weapon; // Current weapon sprite
         
-        // If the waeapon has a polygon collider and a sprite, then set it to the weapon sprite physics shape
+        // Set current weapon sprite
+        weaponSpriteRenderer.sprite = currentWeapon.weaponDetails.weaponSprite;
+        
+        // If the weapon has a polygon collider and a sprite, then set it to the weapon sprite physics shape
         if (weaponPolygonCollider2D != null && weaponSpriteRenderer != null)
         {
             // Get sprite physics shape. This returns the sprite physic shape points as list of Vector2s
