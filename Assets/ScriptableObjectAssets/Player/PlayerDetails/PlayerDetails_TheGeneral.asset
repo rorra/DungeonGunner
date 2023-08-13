@@ -22,5 +22,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: af997e727745f7840b8c9e041c4ab533, type: 2}
   - {fileID: 11400000, guid: fb127d10a4529114a8f36ae06c2d4a3e, type: 2}
   - {fileID: 11400000, guid: bca4a6f2d60ef1543b8794763265a969, type: 2}
+  - {fileID: 11400000, guid: 7e68414e74970db4e8d05ef91133094a, type: 2}
   playerMiniMapIcon: {fileID: 21300000, guid: 709f49100a0267f419aa33d571fb9d25, type: 3}
   playerHandSprite: {fileID: 21300000, guid: a8c352369ed75924d84743672d1ab512, type: 3}
