@@ -58,6 +58,9 @@ public class Door : MonoBehaviour
             doorCollider.enabled = false;
             doorTrigger.enabled = false;
             animator.SetBool(Settings.open, true);
+            
+            // Play sound effect
+            SoundEffectManager.Instance.PlaySoundEffect(GameResources.Instance.doorOpenCloseSoundEffect);
         }
     }
 
