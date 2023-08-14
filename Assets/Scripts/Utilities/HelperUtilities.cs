@@ -90,6 +90,19 @@ public static class HelperUtilities
     }
 
     /// <summary>
+    /// Convert the linear volume scale to decibels
+    /// </summary>
+    /// <param name="linear"></param>
+    /// <returns></returns>
+    public static float LinearToDecibels(int linear)
+    {
+        float linearScaleRange = 20f;
+        
+        // formula to convert linear to decibels
+        return Mathf.Log10((float)linear / linearScaleRange) * linearScaleRange;
+    }
+
+    /// <summary>
     /// string is empty; returns true if ther eis an error
     /// </summary>
     /// <param name="thisObject"></param>
